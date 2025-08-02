@@ -11,8 +11,10 @@ abbrev QuadForm (R M : Type*) [CommRing R] [AddCommGroup M] [Module R M] :=
 
 namespace QuadForm
 
+variable [CommRing R] [AddCommGroup M] [Module R M]
+
 /--  The symmetric bilinear form attached to `Q`.  -/
-def associatedBilinForm (Q : QuadForm R M) : BilinForm R M :=
+def associatedBilinForm (Q : QuadForm R M) : LinearMap.BilinForm R M :=
   Q.polarBilin  -- a `BilinMap R M R` coerces to `BilinForm R M`
 
 /--  `Q` is nondegenerate iff its associated bilinear form is.  -/

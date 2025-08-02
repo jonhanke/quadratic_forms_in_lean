@@ -5,44 +5,45 @@ A simple quadratic form representing x ↦ x^2
 over the finite field ZMod 2,
 built with the Mathlib QuadraticForm API.
 -/
-import Mathlib.LinearAlgebra.QuadraticForm.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Algebra.CharP.Basic
+-- import Mathlib.LinearAlgebra.QuadraticForm.Basic
+-- import Mathlib.Data.ZMod.Basic
+-- import Mathlib.Algebra.CharP.Basic
 
-open QuadraticForm
+-- open QuadraticMap
+-- #check ofPolar
 
-/-- The map `x ↦ x^2` as a quadratic form over any commutative ring. -/
-def squareForm {R : Type*} [CommRing R] : QuadraticForm R R :=
-  ofPolar (fun x => x * x)
-    (by
-      intros a b
-      simp
-      ring)
+-- /-- The map `x ↦ x^2` as a quadratic form over any commutative ring. -/
+-- def squareForm {R : Type*} [CommRing R] : QuadraticForm R R :=
+--   ofPolar (N:=R) (M:=R) (fun (x:R) => x * x )
+--     (by
+--       intros a b
+--       simp
+--       ring)
 
-/-- Instantiate the form at `ZMod 2`. -/
-def squareZMod2 : QuadraticForm (ZMod 2) (ZMod 2) :=
-  squareForm
+-- /-- Instantiate the form at `ZMod 2`. -/
+-- def squareZMod2 : QuadraticForm (ZMod 2) (ZMod 2) :=
+--   squareForm
 
-@[simp]
-theorem squareZMod2_toFun (x : ZMod 2) : squareZMod2 x x = x * x :=
-  rfl
+-- @[simp]
+-- theorem squareZMod2_toFun (x : ZMod 2) : squareZMod2 x x = x * x :=
+--   rfl
 
-/--
-In characteristic 2 the bilinear (polar) form attached to
-`squareZMod2` is identically zero.
--/
-theorem polar_squareZMod2 (x y : ZMod 2) : polar squareZMod2 x y = 0 := by
-  simp [polar]
-  have h_char : (2 : ZMod 2) = 0 := by norm_num
-  have h_expand : squareZMod2 (x + y) = squareZMod2 x + squareZMod2 y + 2 * x * y := by
-    simp [squareZMod2, squareForm, ofPolar]
-    ring
-  rw [h_expand]
-  simp [h_char]
-  ring
+-- /--
+-- In characteristic 2 the bilinear (polar) form attached to
+-- `squareZMod2` is identically zero.
+-- -/
+-- theorem polar_squareZMod2 (x y : ZMod 2) : polar squareZMod2 x y = 0 := by
+--   simp [polar]
+--   have h_char : (2 : ZMod 2) = 0 := by norm_num
+--   have h_expand : squareZMod2 (x + y) = squareZMod2 x + squareZMod2 y + 2 * x * y := by
+--     simp [squareZMod2, squareForm, ofPolar]
+--     ring
+--   rw [h_expand]
+--   simp [h_char]
+--   ring
 
--- Quick `#eval` tests:
-#eval squareZMod2 0        -- 0
-#eval squareZMod2 1        -- 1
-#eval List.map (fun x => (x, squareZMod2 x)) (List.finRange 2)
--- [(0, 0), (1, 1)]
+-- -- Quick `#eval` tests:
+-- #eval squareZMod2 0        -- 0
+-- #eval squareZMod2 1        -- 1
+-- #eval List.map (fun x => (x, squareZMod2 x)) (List.finRange 2)
+-- -- [(0, 0), (1, 1)]

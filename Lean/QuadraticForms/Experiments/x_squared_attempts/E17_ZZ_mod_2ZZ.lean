@@ -32,6 +32,11 @@ In characteristic 2 the bilinear (polar) form attached to
 theorem polar_squareZMod2 (x y : ZMod 2) : polar squareZMod2 x y = 0 := by
   simp [polar]
   ring_nf
+  have := (ZMod.eq_zero_iff_even (n:=2)).mpr
+  specialize this (by simp)
+  push_cast at this
+  rw [mul_comm,this]
+  simp
 
 -- Quick `#eval` tests:
 #eval squareZMod2 0             -- 0

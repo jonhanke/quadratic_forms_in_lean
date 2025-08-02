@@ -10,29 +10,28 @@ open QuadraticMap
 
 /-- The map `(x,y) ↦ x^2 + y^2` as a quadratic form on `R × R`. -/
 def sumOfTwoSquares {R : Type*} [CommRing R] : QuadraticForm R (R × R) :=
-  ofPolar
-    (fun p => p.1 * p.1 + p.2 * p.2)
+  ofPolar (N:=R) (M:=R×R)
+    (toFun := fun p: R × R => p.1 * p.1 + p.2 * p.2)
     (by
       -- Q (a • (x,y)) = a • Q (x,y)
       intros a p
-      cases p with x y
+      rcases p with ⟨x,y⟩
       dsimp
-      simp [smul_eq_mul]
       ring)
     (by
       -- bilinear in first argument of `polar`
       intros p q r
-      cases p with x1 x2
-      cases q with y1 y2
-      cases r with z1 z2
+      rcases p with ⟨x1,x2⟩
+      rcases q with ⟨y1,y2⟩
+      rcases r with ⟨z1,z2⟩
       dsimp [polar]
       -- polar Q (p + q) r = Q(p+q+r) - Q(p+q) - Q r
       ring)
     (by
       -- bilinear in second argument of `polar`
       intros a p q
-      cases p with x1 x2
-      cases q with y1 y2
+      rcases p with ⟨x1,x2⟩
+      rcases q with ⟨y1,y2⟩
       dsimp [polar]
       ring)
 

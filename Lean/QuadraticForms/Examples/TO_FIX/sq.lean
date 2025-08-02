@@ -39,14 +39,15 @@ def eval2_at (a b c : ZMod 2) : ZMod 2 × ZMod 2 × ZMod 2 :=
 -- Example evaluation
 #eval eval2_at 2 5 (-3)
 
-def b : Basis (Fin 1) (ZMod 2) (ZMod 2) := .singleton _ _
+def b' : Basis (Fin 1) (ZMod 2) (ZMod 2) := .singleton _ _
 #eval QuadraticMap.polar q2 1 1
 example : LinearMap.toMatrix₂ b b (q2.toBilin b) = !![sorry] := by
   ext  i j
   rw [Subsingleton.elim i 0, Subsingleton.elim j 0]
   simp
   rw [@QuadraticMap.toBilin_apply]
-  simp [q2, b]
+  simp [q2]
+  sorry
 
 #check 1+2+3
 
@@ -106,7 +107,7 @@ section
 
 section Single
 
-variable [Zero M] {a a' : α} {b : M}
+variable [Zero M] {a a' : α}
 
 /-- `single a b` is the finitely supported function with value `b` at `a` and zero otherwise. -/
 def Finsupp.single' [DecidableEq α] [DecidableEq M] (a : α) (b : M) : α →₀ M where
@@ -118,75 +119,74 @@ def Finsupp.single' [DecidableEq α] [DecidableEq M] (a : α) (b : M) : α →�
 
 end Single
 
+-- -- Define the basis using Basis.singleton
+-- abbrev b'' : Basis (Fin 1) ZMod2 ZMod2 :=
+--   Basis.singleton (Fin 1) (ZMod 2)
+
+
+
+-- -- Attempt to print a polar matrix created for the quadratic form x^2
+-- -- #eval LinearMap.toMatrix₂ (q.toBilin (Basis.singleton (Fin 1) _ ) )
+
+
+
+
+-- -- Define the ring ZZ/2ZZ
+-- abbrev ZMod2' := ZMod 2
+
+-- -- Define the basis using Basis.singleton
+-- def b' : Basis (Fin 1) ZMod2 ZMod2 :=
+--   Basis.singleton (Fin.mk 0 Nat.one) (1 : ZMod2)
+
+-- -- Example usage: Get the basis element
+-- #eval b' (Fin.mk 0 Nat.one)
+
+-- -- Example usage: Check if it's a basis (it is by construction with Basis.singleton)
+-- #eval b'.isBasis
+
+
+
+
+-- -- Define the ring ZZ/2ZZ
+-- abbrev ZMod2 := ZMod 2
+
+-- -- Define the basis using Basis.singleton
+-- def b : Basis (Fin 1) ZMod2 ZMod2 :=
+--   Basis.singleton (Fin.mk 0 1) (1 : ZMod2)
+
+-- -- Example usage: Get the basis element
+-- #eval b (Fin.mk 0 1)
+
+-- -- Example usage: Check if it's a basis (it is by construction with Basis.singleton)
+-- #eval b.isBasis
+
+
+
+
+
+-- Define the ring ZZ/2ZZ
+--abbrev ZMod2 := ZMod 2
+
 -- Define the basis using Basis.singleton
-abbrev b : Basis (Fin 1) ZMod2 ZMod2 :=
-  Basis.singleton (Fin 1) (ZMod 2)
+def b : Basis (Fin 1) ZMod2 ZMod2 :=
+  Basis.singleton (Fin 1) (ZMod2)
+
+-- Example usage: Get the basis element
+#check (b (Fin.mk 0 (by linarith)))
+
+-- Example usage: Check if it's a basis (it is by construction with Basis.singleton)
+--#eval b.isBasis
+
+
+
+
+
+
 
 
 
 -- Attempt to print a polar matrix created for the quadratic form x^2
--- #eval LinearMap.toMatrix₂ (q.toBilin (Basis.singleton (Fin 1) _ ) )
-
-
-
-
--- Define the ring ZZ/2ZZ
-abbrev ZMod2 := ZMod 2
-
--- Define the basis using Basis.singleton
-def b : Basis (Fin 1) ZMod2 ZMod2 :=
-  Basis.singleton (Fin.mk 0 Nat.one) (1 : ZMod2)
-
--- Example usage: Get the basis element
-#eval b (Fin.mk 0 Nat.one)
-
--- Example usage: Check if it's a basis (it is by construction with Basis.singleton)
-#eval b.isBasis
-
-
-
-
--- Define the ring ZZ/2ZZ
-abbrev ZMod2 := ZMod 2
-
--- Define the basis using Basis.singleton
-def b : Basis (Fin 1) ZMod2 ZMod2 :=
-  Basis.singleton (Fin.mk 0 1) (1 : ZMod2)
-
--- Example usage: Get the basis element
-#eval b (Fin.mk 0 1)
-
--- Example usage: Check if it's a basis (it is by construction with Basis.singleton)
-#eval b.isBasis
-
-
-
-
-
--- Define the ring ZZ/2ZZ
-abbrev ZMod2 := ZMod 2
-
--- Define the basis using Basis.singleton
-def b : Basis (Fin 1) ZMod2 ZMod2 :=
-  Basis.singleton (Fin.mk 0 Fin.size_one) (1 : ZMod2)
-
--- Example usage: Get the basis element
-#eval b (Fin.mk 0 Fin.size_one)
-
--- Example usage: Check if it's a basis (it is by construction with Basis.singleton)
-#eval b.isBasis
-
-
-
-
-
-def b :
- := (Fin 1)
-
-
-
--- Attempt to print a polar matrix created for the quadratic form x^2
-#eval LinearMap.toMatrix₂ (q.toBilin (Basis.singleton (Fin 1) _ ) )
+--#check LinearMap.toMatrix₂ (q.toBilin (Basis.singleton (Fin 1) _ ) )
 
 
 

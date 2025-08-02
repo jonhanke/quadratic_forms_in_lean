@@ -24,7 +24,8 @@ rfl
 
 /-- A quadratic form is called *nondegenerate* if its associated bilinear form is nondegenerate. -/
 def Nondegenerate (Q : QuadForm R M) : Prop :=
-  LinearMap.BilinMap.Nondegenerate (associatedBilinearForm Q)
+   (associatedBilinearMap Q).Nondegenerate
+  --LinearMap.BilinMap.Nondegenerate (associatedBilinearForm Q)
 
 -- Looked for the associated non-degenerate reference at, but didn't find one:
 -- https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/BilinearMap.html#LinearMap.BilinMap

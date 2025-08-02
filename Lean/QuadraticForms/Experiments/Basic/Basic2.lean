@@ -3,7 +3,7 @@ import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
 
 namespace QuadraticForms
-
+open LinearMap
 -- open QuadraticForm
 
 -- A *quadratic form* over a module M is a map Q : M → R
@@ -17,13 +17,18 @@ variable {R : Type*} {M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
 
 namespace QuadForm
 
+
+--Adding sorries for it to build, largely covered in basic 10
+
 /-- The associated symmetric bilinear form of a quadratic form. -/
-def associatedBilinearForm (Q : QuadForm R M) : BilinForm R M :=
-  Q.polarization
+def associatedBilinearForm (Q : QuadForm R M) : LinearMap.BilinForm R M :=
+  sorry
+  --Q.polarization
 
 /-- A quadratic form is called *nondegenerate* if its associated bilinear form is nondegenerate. -/
 def Nondegenerate (Q : QuadForm R M) : Prop :=
-  BilinForm.Nondegenerate (associatedBilinearForm Q)
+  sorry
+  --BilinForm.Nondegenerate (associatedBilinearForm Q)
 
 /-- A quadratic form is *anisotropic* if Q(x) = 0 implies x = 0. -/
 def Anisotropic (Q : QuadForm R M) : Prop :=

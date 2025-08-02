@@ -15,7 +15,7 @@ namespace QuadForm
 variable {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
 
 /-- The companion bilinear map attached to a quadratic form. -/
-def associatedBilinearMap (Q : QuadForm R M) : BilinMap R M R :=
+def associatedBilinearMap (Q : QuadForm R M) : LinearMap.BilinMap R M R :=
   Q.polarBilin
 
 @[simp]

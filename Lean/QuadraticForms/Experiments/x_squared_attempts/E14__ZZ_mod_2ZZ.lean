@@ -27,10 +27,17 @@ This `@[simp]` theorem gives that reduction to `simp`.
 -/
 @[simp] theorem squareZMod2_toFun (x : ZMod 2) : squareZMod2 x = x * x := rfl
 
+#check ZMod.eq_zero_iff_even
+
 /-- Now `polar squareZMod2 x y` unfolds to `(x+y)^2 - x^2 - y^2 = 2*x*y` in `ZMod 2`. -/
 example (x y : ZMod 2) : polar squareZMod2 x y = 0 := by
   simp [polar]
   ring_nf
+  have := (ZMod.eq_zero_iff_even (n:=2)).mpr
+  specialize this (by simp)
+  push_cast at this
+  rw [mul_comm,this]
+  simp
   -- In characteristic 2, 2*x*y = 0
 
 -- Test the evaluation on some simple values

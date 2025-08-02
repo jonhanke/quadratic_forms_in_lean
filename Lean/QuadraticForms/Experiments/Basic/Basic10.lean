@@ -56,28 +56,52 @@ notation:70 a " •ₛ " Q => smul a Q
 
 
 
+@[simp]
+def linearMap_of_Prodfst: LinearMap (RingHom.id R) (M × M) M :=
+ {
+   toFun := fun prd ↦ prd.fst
+   map_add' := by
+    simp
+   map_smul' := by
+    simp
+ }
 
-
-
+@[simp]
+def linearMap_of_Prodsnd: LinearMap (RingHom.id R) (M × M) M :=
+ {
+   toFun := fun prd ↦ prd.snd
+   map_add' := by
+    simp
+   map_smul' := by
+    simp
+ }
 
 /-- The orthogonal sum of two quadratic forms on `M`, living on `M × M`. -/
 def orthogonalSum (Q₁ Q₂ : QuadForm R M) : QuadForm R (M × M) :=
-  Q₁.comp (Prod.fst : (M × M) →ₗ[R] M) +
-  Q₂.comp (Prod.snd : (M × M) →ₗ[R] M)
+  Q₁.comp (linearMap_of_Prodfst) +
+  Q₂.comp (linearMap_of_Prodsnd)
 
 @[simp]
 theorem orthogonalSum_apply (Q₁ Q₂ : QuadForm R M) (x y : M) :
-  orthogonalSum Q₁ Q₂ (x, y) = Q₁ x + Q₂ y :=
+  (orthogonalSum Q₁ Q₂ (x, y)) = Q₁ x + Q₂ y :=
 rfl
 
 
 /-- Scalar multiplication distributes over orthogonal sums. -/
 example (a : R) (Q₁ Q₂ : QuadForm R M) :
-    a •ₛ (orthogonalSum Q₁ Q₂) = orthogonalSum (a •ₛ Q₁) (a •ₛ Q₂) := by
+    (a •ₛ (orthogonalSum Q₁ Q₂)) = orthogonalSum (a •ₛ Q₁) (a •ₛ Q₂) := by
+    ext p
+    rw [orthogonalSum_apply]
+    simp only [smul]
+    simp
+    rw [orthogonalSum_apply]
+    ring
+
   -- because `•ₛ` is just `•` on `QuadraticMap` and `comp`/`+` commute with `•`
-  show (a • Q₁.comp Prod.fst + a • Q₂.comp Prod.snd : QuadraticMap R (M × M) R)
-      = (a • Q₁).comp Prod.fst + (a • Q₂).comp Prod.snd
-  by simp
+
+  -- show (a • Q₁.comp linearMap_of_Prodfst + a • Q₂.comp linearMap_of_Prodsnd : QuadraticMap R (M × M) R)
+  --     = (a • Q₁).comp linearMap_of_Prodfst + (a • Q₂).comp linearMap_of_Prodsnd
+  -- by simp
 
 
 ---/
@@ -97,8 +121,15 @@ example {Q : QuadForm R M} (h : Anisotropic Q) : ¬ Isotropic Q :=
 variable (Q₁ Q₂ : QuadForm R M) (a : R)
 
 /-- Scalar multiplication distributes over orthogonal sums. --/
-example : a •ₛ (orthogonalSum Q₁ Q₂) = orthogonalSum (a •ₛ Q₁) (a •ₛ Q₂) := by
-    rfl  -- This follows by definition in Mathlib
+example : (a •ₛ (orthogonalSum Q₁ Q₂)) = orthogonalSum (a •ₛ Q₁) (a •ₛ Q₂) := by
+    ext p
+    simp only [smul]
+    simp
+    rw [orthogonalSum_apply,orthogonalSum_apply]
+    simp;ring
+
+
+    --rfl  -- This follows by definition in Mathlib (Yan: I could not get it to agree)
 
 
 end QuadForm

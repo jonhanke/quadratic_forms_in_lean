@@ -25,101 +25,102 @@ def squareForm {R : Type*} [CommRing R] : QuadraticForm R R :=
 
 
 
-variable {R : Type u} [CommSemiring R]
+variable {R : Type u} [CommRing R]
 
+#check smul_eq_mul
 
 
 /-- The quadratic map `x ↦ x^2`. -/
 def squareMap : QuadraticMap R R R :=
-  ofPolar
+  ofPolar (R:=R) (M:=R) (N:=R)
     (fun x => x * x)                            -- Q x = x^2
-    (by intros a x; simp [smul_eq_mul]; ring)   -- Q (a•x) = a^2 • Q x
+    (by intros a x; simp;ring)   -- Q (a•x) = a^2 • Q x
     (by intros x y z; simp [polar]; ring)       -- bilinear in the first arg
     (by intros a x y; simp [polar]; ring)       -- bilinear in the second arg
 
 @[simp] lemma squareMap_apply (x : R) : squareMap.toFun x = x * x := rfl
 
 
+--ALREADY DEFINED
 
+-- /-- The quadratic map `x ↦ x^2`, with companion `B(x,y)=2*x*y`. -/
+-- def squareMap : QuadraticMap R R R where
+--   toFun x := x * x
+--   toFun_smul a x := by
+--     -- Q (a • x) = (a*x)*(a*x) = (a*a) • (x*x)
+--     simp [smul_eq_mul]; ring
 
-/-- The quadratic map `x ↦ x^2`, with companion `B(x,y)=2*x*y`. -/
-def squareMap : QuadraticMap R R R where
-  toFun x := x * x
-  toFun_smul a x := by
-    -- Q (a • x) = (a*x)*(a*x) = (a*a) • (x*x)
-    simp [smul_eq_mul]; ring
+--   exists_companion' :=
+--     ⟨ -- here is your bilinear form packaged as a BilinMap:
+--       mk (fun x y => (2 : R) * x * y)
+--          (by intros x x' y; simp [add_mul];      ring)  -- add in left
+--          (by intros a x y; simp [smul_eq_mul];  ring)  -- smul in left
+--          (by intros x y y'; simp [mul_add];      ring)  -- add in right
+--          (by intros a x y; simp [smul_eq_mul];  ring), -- smul in right
+--       -- now prove (x+y)^2 = x^2 + y^2 + B(x,y):
+--       by intros x y; simp [add_mul, mul_add]; ring ⟩
 
-  exists_companion' :=
-    ⟨ -- here is your bilinear form packaged as a BilinMap:
-      mk (fun x y => (2 : R) * x * y)
-         (by intros x x' y; simp [add_mul];      ring)  -- add in left
-         (by intros a x y; simp [smul_eq_mul];  ring)  -- smul in left
-         (by intros x y y'; simp [mul_add];      ring)  -- add in right
-         (by intros a x y; simp [smul_eq_mul];  ring), -- smul in right
-      -- now prove (x+y)^2 = x^2 + y^2 + B(x,y):
-      by intros x y; simp [add_mul, mul_add]; ring ⟩
-
-@[simp] lemma squareMap_apply (x : R) : squareMap.toFun x = x * x := rfl
-
-
-
-
-/-- The quadratic map `x ↦ x^2`, by hand. -/
-def squareMap₂ : QuadraticMap R R R where
-  toFun x := x * x
-  toFun_smul a x := by simp [smul_eq_mul]; ring
-  exists_companion' :=
-    ⟨ { toFun := fun x y => (2 : R) * x * y,
-        map_add_left  := by intros x x' y; simp [add_mul]; ring,
-        map_smul_left := by intros a x y; simp [smul_eq_mul]; ring,
-        map_add_right := by intros x y y'; simp [mul_add]; ring,
-        map_smul_right:= by intros a x y; simp [smul_eq_mul]; ring },
-      by intros x y; simp [add_mul, mul_add]; ring ⟩
-
-
-
-/-- The quadratic map `x ↦ x^2`. -/
-def squareMap : QuadraticMap R R R :=
-  ofPolar
-    (fun x y => x * y + y * x)        -- companion bilinear form
-    (by intros a x; simp [smul_eq_mul]; ring)      -- Q (a•x) = a² • Q x
-    (by intros x y z; simp; ring)                -- bilinear in first arg
-    (by intros a x y; simp [smul_eq_mul]; ring)   -- bilinear in second arg
+-- @[simp] lemma squareMap_apply (x : R) : squareMap.toFun x = x * x := rfl
 
 
 
 
-variable {R : Type u} [CommSemiring R]
+-- /-- The quadratic map `x ↦ x^2`, by hand. -/
+-- def squareMap₂ : QuadraticMap R R R where
+--   toFun x := x * x
+--   toFun_smul a x := by simp [smul_eq_mul]; ring
+--   exists_companion' :=
+--     ⟨ { toFun := fun x y => (2 : R) * x * y,
+--         map_add_left  := by intros x x' y; simp [add_mul]; ring,
+--         map_smul_left := by intros a x y; simp [smul_eq_mul]; ring,
+--         map_add_right := by intros x y y'; simp [mul_add]; ring,
+--         map_smul_right:= by intros a x y; simp [smul_eq_mul]; ring },
+--       by intros x y; simp [add_mul, mul_add]; ring ⟩
 
 
 
-/-- The quadratic map `x ↦ x^2`. -/
-def squareMap : QuadraticMap R R R where
-  toFun x := x * x
-  toFun_smul a x := by
-    -- Q (a • x) = (a * x) * (a * x) = (a * a) • (x * x)
-    simp [smul_eq_mul]; ring
-  exists_companion' :=
-    ⟨fun x y => (2 : R) * x * y, by
-      -- (x + y)^2 = x^2 + y^2 + 2*x*y
-      intro x y
-      simp [add_mul, mul_add, smul_eq_mul]; ring⟩
-
-@[simp] lemma squareMap_apply (x : R) : squareMap.toFun x = x * x := rfl
+-- /-- The quadratic map `x ↦ x^2`. -/
+-- def squareMap : QuadraticMap R R R :=
+--   ofPolar
+--     (fun x y => x * y + y * x)        -- companion bilinear form
+--     (by intros a x; simp [smul_eq_mul]; ring)      -- Q (a•x) = a² • Q x
+--     (by intros x y z; simp; ring)                -- bilinear in first arg
+--     (by intros a x y; simp [smul_eq_mul]; ring)   -- bilinear in second arg
 
 
 
-/-- The quadratic map `x ↦ x^2`. -/
-def squareMap : QuadraticMap R R R where
-  toFun x := x * x
-  toFun_smul a x := by
-    -- Q (a • x) = (a • x) * (a • x) = (a * x) * (a * x) = a^2 * (x * x)
-    simp [smul_eq_mul]; ring
-  exists_companion' :=
-    ⟨fun x y => (2 : R) * x * y, by
-      -- (x + y)^2 = x^2 + y^2 + 2*x*y
-      intro x y
-      simp [add_mul, mul_add, smul_eq_mul]; ring⟩
+
+-- variable {R : Type u} [CommSemiring R]
+
+
+
+-- /-- The quadratic map `x ↦ x^2`. -/
+-- def squareMap : QuadraticMap R R R where
+--   toFun x := x * x
+--   toFun_smul a x := by
+--     -- Q (a • x) = (a * x) * (a * x) = (a * a) • (x * x)
+--     simp [smul_eq_mul]; ring
+--   exists_companion' :=
+--     ⟨fun x y => (2 : R) * x * y, by
+--       -- (x + y)^2 = x^2 + y^2 + 2*x*y
+--       intro x y
+--       simp [add_mul, mul_add, smul_eq_mul]; ring⟩
+
+-- @[simp] lemma squareMap_apply (x : R) : squareMap.toFun x = x * x := rfl
+
+
+
+-- /-- The quadratic map `x ↦ x^2`. -/
+-- def squareMap : QuadraticMap R R R where
+--   toFun x := x * x
+--   toFun_smul a x := by
+--     -- Q (a • x) = (a • x) * (a • x) = (a * x) * (a * x) = a^2 * (x * x)
+--     simp [smul_eq_mul]; ring
+--   exists_companion' :=
+--     ⟨fun x y => (2 : R) * x * y, by
+--       -- (x + y)^2 = x^2 + y^2 + 2*x*y
+--       intro x y
+--       simp [add_mul, mul_add, smul_eq_mul]; ring⟩
 
 
 

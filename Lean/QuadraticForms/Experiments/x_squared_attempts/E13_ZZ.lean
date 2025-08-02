@@ -32,4 +32,6 @@ We `simp` away the `polar`‐definition (and unfold `squareInt` via the `@[simp]
 then finish with `ring_nf`.
 -/
 example (x y : Int) : polar squareInt x y = 2 * x * y := by
-  simp [polar]; ring_nf
+  simp [polar]
+  rw [squareInt,squareForm]
+  simp;ring

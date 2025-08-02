@@ -26,4 +26,6 @@ theorem squareInt_apply (x : Int) : squareInt.toFun x = x * x :=
   rfl
 
 example (x y : Int) : polar squareInt x y = 2 * x * y := by
-  simp [polar]; ring
+  simp [polar]
+  rw [squareInt,squareForm]
+  simp;ring
